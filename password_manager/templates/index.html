@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="panel">
+  <div class="toolbar">
+    <h1>Записи</h1>
+    <div class="actions"><a class="button" href="/">Обновить</a><a class="button primary" href="/entries/new">Добавить запись</a></div>
+  </div>
+  {% if status %}<p class="status" role="status">{{ status }}</p>{% endif %}
+  {% if dashboard.credentials %}
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Таблица записей">
+      <table aria-label="Записи">
+        <thead><tr><th scope="col">Сервис</th><th scope="col">Логин</th><th scope="col">Действия</th></tr></thead>
+        <tbody>
+          {% for entry in dashboard.credentials %}
+          <tr>
+            <td>{{ entry.title }}</td><td>{{ entry.username }}</td>
+            <td><div class="actions">
+              <form method="post" action="/entries/{{ entry.id }}/reveal">
+                <input type="hidden" name="csrf" value="{{ csrf_token }}">
+                <button type="submit">Показать пароль</button>
+              </form>
+              <a class="button" href="/entries/{{ entry.id }}/edit">Изменить</a>
+              <a class="button danger" href="/entries/{{ entry.id }}/delete">Удалить</a>
+            </div></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}<p class="muted">Записей пока нет.</p>{% endif %}
+</section>
+<div class="overview">
+  <section class="panel">
+    <h2>Активность за 7 дней</h2>
+    <p class="muted">Количество действий по дням, UTC</p>
+    <ul class="chart" aria-label="Действия по дням">
+      {% for day in dashboard.daily_counts %}
+      <li><time datetime="{{ day.day.isoformat() }}">{{ day.day.strftime('%d.%m') }}</time>
+        <meter min="0" max="{{ chart_max }}" value="{{ day.count }}" aria-label="Действий {{ day.day.strftime('%d.%m') }}">{{ day.count }}</meter>
+        <span>{{ day.count }}</span></li>
+      {% endfor %}
+    </ul>
+  </section>
+  <section class="panel">
+    <h2>Журнал активности</h2>
+    {% if dashboard.activity %}
+    <ul class="journal">
+      {% for item in dashboard.activity %}
+      <li><strong>{{ item.label }}</strong> · {{ item.title }}
+        <time datetime="{{ item.occurred_at.isoformat() }}">{{ item.occurred_at.strftime('%d.%m.%Y %H:%M') }} UTC</time></li>
+      {% endfor %}
+    </ul>
+    {% else %}<p class="muted">Действий пока нет.</p>{% endif %}
+  </section>
+</div>
+{% endblock %}

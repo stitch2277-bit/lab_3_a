@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="panel form-panel">
+  <h1>Пароль</h1>
+  <p class="entry-title">{{ entry.title }} · {{ entry.username }}</p>
+  <pre class="secret" aria-label="Сохранённый пароль">{{ password }}</pre>
+  <a class="button" href="/">Закрыть</a>
+</section>
+{% endblock %}

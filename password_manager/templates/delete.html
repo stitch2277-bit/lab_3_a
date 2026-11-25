@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="panel form-panel">
+  <h1>Удалить запись</h1>
+  <p class="entry-title">Удалить запись «{{ entry.title }}» для логина «{{ entry.username }}»?</p>
+  <form class="actions" method="post" action="/entries/{{ entry.id }}/delete">
+    <input type="hidden" name="csrf" value="{{ csrf_token }}">
+    <a class="button" href="/" autofocus>Отмена</a>
+    <button class="danger" type="submit">Удалить</button>
+  </form>
+</section>
+{% endblock %}

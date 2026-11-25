@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Менеджер паролей</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <nav class="container navigation" aria-label="Главное меню">
+      <a class="brand" href="/">Менеджер паролей</a>
+      <details class="menu">
+        <summary>Файл</summary>
+        <div><a href="/">Обновить</a><a href="/exit">Выход</a></div>
+      </details>
+    </nav>
+  </header>
+  <main class="container">{% block content %}{% endblock %}</main>
+</body>
+</html>

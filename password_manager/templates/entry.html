@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="panel form-panel">
+  <h1>{{ 'Изменить запись' if entry_id else 'Добавить запись' }}</h1>
+  {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+  <form class="entry-form" method="post" action="{{ '/entries/' ~ entry_id ~ '/edit' if entry_id else '/entries' }}" autocomplete="off">
+    <input type="hidden" name="csrf" value="{{ csrf_token }}">
+    <label for="title">Сервис</label>
+    <input id="title" name="title" value="{{ title }}" maxlength="{{ title_limit }}" required autofocus>
+    <label for="username">Логин</label>
+    <input id="username" name="username" value="{{ username }}" maxlength="{{ username_limit }}" required>
+    <label for="password">Пароль</label>
+    {% if entry_id %}<p class="muted hint" id="password-hint">Оставьте поле пустым, чтобы сохранить прежний пароль.</p>{% endif %}
+    <input id="password" name="password" type="password" autocomplete="new-password" maxlength="{{ password_limit }}"
+           {% if entry_id %}aria-describedby="password-hint"{% else %}required{% endif %}>
+    <div class="actions"><button class="primary" type="submit">Сохранить</button><a class="button" href="/">Отмена</a></div>
+  </form>
+</section>
+{% endblock %}
